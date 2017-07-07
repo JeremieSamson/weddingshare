@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+
+    {% include 'AppBundle::nav.html.twig' %}
+
+    {% include 'AppBundle::carousel.html.twig' %}
+
+    <!-- Page Content -->
+    <div class="container">
+
+        {% include 'AppBundle::vote.html.twig' %}
+
+        {% include 'AppBundle::participer.html.twig' %}
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="{{ asset('bundles/app/js/jquery.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        });
+
+        function scrollTo(hash) {
+            location.hash = "#" + hash;
+        }
+    </script>
+
+{% endblock %}

@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8" />
+
+    <title>{% block title %}SoJu.ovh{% endblock %}</title>
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/modern-business.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

@@ -1,0 +1,26 @@
+<!-- Header Carousel -->
+<header id="myCarousel" class="carousel slide">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        {% for picture in pictures %}
+            <li data-target="#myCarousel" data-slide-to="{{ loop.index - 1 }}" class="{{ loop.index - 1 == 0 ? 'active' : "" }}"></li>
+        {% endfor %}
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        {% for picture in pictures %}
+            <div class="item {{ loop.index - 1 == 0 ? 'active' : "" }}">
+                <img src="{{ picture }}">
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+        <span class="icon-prev"></span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+        <span class="icon-next"></span>
+    </a>
+</header>
