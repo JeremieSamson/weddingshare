@@ -19,7 +19,7 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
 
         return $this->render('AppBundle::index.html.twig', array(
             "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
-            "categories" => $lorempixelWrapper->generateRandomPicturesUrl(5),
+            "categories" => $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Category')->findAll(),
         ));
     }
 }

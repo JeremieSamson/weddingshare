@@ -3,14 +3,12 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: "fr"
 
 framework:
     #esi: ~
-    translator: { fallbacks: [fr] }
+    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -48,18 +46,13 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
-        types:
-            json: Sonata\Doctrine\Types\JsonType
 
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         mappings:
-             MediaBundle: ~
-             SonataMediaBundle: ~
-             ClassificationBundle: ~
-             SonataClassificationBundle: ~
+             AppBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -68,60 +61,3 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
-
-# Sonata Media Configuration
-sonata_media:
-    class:
-        media: MediaBundle\Entity\Media
-        gallery: MediaBundle\Entity\Gallery
-        gallery_has_media: MediaBundle\Entity\GalleryHasMedia
-    db_driver: doctrine_orm
-    default_context: default
-    contexts:
-        default:  # the default context is mandatory
-            providers:
-                - sonata.media.provider.image
-                - sonata.media.provider.file
-
-            formats:
-                small: { width: 100 , quality: 70}
-                big:   { width: 500 , quality: 70}
-
-    cdn:
-        server:
-            path: /uploads/media
-
-    filesystem:
-        local:
-            directory:  "%kernel.root_dir%/../web/uploads/media"
-            create:     false
-
-sonata_classification:
-    class:
-        category:     ClassificationBundle\Entity\Category
-    admin:
-        category:
-            class:        Sonata\ClassificationBundle\Admin\CategoryAdmin
-            controller:   SonataClassificationBundle:CategoryAdmin
-            translation:  SonataClassificationBundle
-
-# Sonata admin
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-        # enable the SonataAdminBundle block
-        sonata.admin.block.admin_list:
-            contexts: [admin]
-
-sonata_admin:
-    title: SoJu
-    title_logo: bundles/main/images/logo.png
-    dashboard:
-        groups:
-            admin.group.media:
-                label: admin.group.media
-                label_catalogue: messages
-                items:
-                    - sonata.media.admin.media
-                    - sonata.media.admin.gallery
-                    - sonata.media.admin.gallery
