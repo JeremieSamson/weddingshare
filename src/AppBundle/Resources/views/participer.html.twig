@@ -8,21 +8,41 @@
         <ol>
             <li>Choisis ta catégorie juste a droite</li>
             <li>Met ton nom/surnom ou une façon de te reconnaitre</li>
-            <li>Sélectionne les photos sur ton ordi</li>
+            <li>Sélectionne une photo sur ton ordi</li>
             <li>Envoie le tout !</li>
         </ol>
         <p>
             Si tu gagnes les mariées te prépareront quelque chose.<br>
             <br>
             <h3>Tu as gagnés dans une catégorie ?</h3>
-            <p>
-                Tu as gagné un super méga cool <strong>APERO</strong>APERO
-            </p>
+            <span>
+                Tu as gagné un super méga cool <strong>APERO</strong>
+            </span>
             Et alors attention, pour ceux qui gagneraient dans <b>deux</b> catégories, là, ça sera I-N-O-U-B-L-I-A-B-L-E : les mariés vous concoteront ... UN REPAS !
         </p>
     </div>
+
     <div class="col-md-6">
-        <img class="img-responsive" src="http://placehold.it/700x450" alt="">
+        <br>
+        {{ form_start(form) }}
+        <ol>
+            <li>
+                {{ form_label(form.category) }}
+                {{ form_widget(form.category) }}
+            </li>
+            <li>
+                {{ form_label(form.name) }}
+                {{ form_widget(form.name) }}
+            </li>
+            <li>
+                {{ form_label(form.file) }}
+                {{ form_widget(form.file) }}
+            </li>
+            <li>
+                <input type="submit" value="Envoyer">
+            </li>
+        </ol>
+        {{ form_end(form) }}
     </div>
 </div>
 <!-- /.row -->

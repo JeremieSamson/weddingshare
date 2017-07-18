@@ -4,13 +4,13 @@
         <h2 class="page-header">Voter</h2>
     </div>
 
-    {% for category in categories %}
-        <div class="col-md-4 col-sm-6">
-            <a href="{{ path('vote_new', {'id' : category.id}) }}">
-                <img class="img-responsive img-portfolio img-hover" width="350" src="{{ asset('bundles/app/images/' ~ category.imagePath) }}" alt="">
-                <h1 style="position:absolute; top:100px; left:20px;"> {{ category.name }} </h1>
-            </a>
-        </div>
-    {% endfor %}
+    <ul>
+        {% for category in categories %}
+        <!--<div class="col-md-4 col-sm-6">-->
+            <li><a href="{{ path('vote_new', {'id' : category.id}) }}">{{ category.name }}</a></li>
+            <!--<img class="img-responsive img-portfolio img-hover" width="350" src="{{ asset('bundles/app/images/' ~ category.imagePath) }}" alt="">-->
+        <!--</div>-->
+        {% endfor %}
+    </ul>
 </div>
 <!-- /.row -->

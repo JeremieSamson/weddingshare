@@ -50,6 +50,13 @@ class Media
     private $category;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="author", type="string", length=255)
+     */
+    private $author;
+
+    /**
      * Get id
      *
      * @return int
@@ -145,6 +152,29 @@ class Media
     public function setCategory($category)
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(){
+        return "/uploads/" .$this->getCategory()->getPath(). "/" . $this->name;
     }
 }
 

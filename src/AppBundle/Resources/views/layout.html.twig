@@ -7,10 +7,10 @@
     {% include 'AppBundle::carousel.html.twig' %}
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" style="margin-top: 25px;">
         {% for type, messages in app.session.flashbag.all() %}
             {% for message in messages %}
-                <div class="flash-{{type}}">{{message}}</div>
+                <div class="alert alert-{{type}}">{{message}}</div>
             {% endfor %}
         {% endfor %}
 
@@ -29,9 +29,17 @@
             interval: 5000 //changes the speed
         });
 
-        function scrollTo(hash) {
-            location.hash = "#" + hash;
-        }
+        $(".scroll").click(function() {
+            var href = $(this).attr('href');
+
+            $('html,body').animate
+            (
+                {
+                    scrollTop: $(href).offset().top
+                },
+                'slow'
+            );
+        });
     </script>
 
 {% endblock %}

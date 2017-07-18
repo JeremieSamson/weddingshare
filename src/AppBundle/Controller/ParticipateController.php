@@ -39,7 +39,7 @@ class VoteController extends Controller
         try{
             $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($id);
         }catch(\Exception $e){
-            $this->addFlash('danger', 'La page demandée n\'existe pas');
+            $this->addFlash('error', 'La page demandée n\'existe pas');
         }
 
         $voteHereAlready = $this->getDoctrine()->getRepository('AppBundle:Vote')->findOneBy(array(
@@ -48,25 +48,42 @@ class VoteController extends Controller
         ));
 
         if ($voteHereAlready) {
-            $this->addFlash('danger', 'Vous avez déjà voté pour cette catégorie !');
+            $this->addFlash('error', 'Vous avez déjà voté pour cette catégorie !');
 
             return $this->render('AppBundle:vote:voteAlready.html.twig', array(
                 "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
                 "category" => $category,
-                'vote' => $voteHereAlready
             ));
         } else {
             $vote = new Vote();
 
-            if ($request->get('action') == 'vote') {
+            $form = $this->createForm('AppBundle\Form\Type\VoteType', $vote);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
 
                 // Set other attributes
                 $vote->setIp($ip);
                 $category->addVote($vote);
 
-                $em->persist($vote);
+                // Move file
+                /** @var UploadedFile $file */
+                $file = $vote->getFile();
+                $media = new Media();
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $media->setExtension($file->guessExtension());
+                $media->setName($fileName);
+                $media->setUrl($this->getParameter('kernel.project_dir') . '/web/uploads/' . $category->getPath());
 
+                // Move the file to the directory where brochures are stored
+                $file->move(
+                    $media->getUrl(),
+                    $fileName
+                );
+
+                $em->persist($vote);
+                $em->persist($media);
                 $em->flush();
 
                 $this->addFlash('success', 'Votre vote a bien été enregistré !');
@@ -81,27 +98,70 @@ class VoteController extends Controller
         return $this->render('AppBundle:vote:form.html.twig', array(
             "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
             "category" => $category,
-            'vote' => $vote
+            'vote' => $vote,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * Finds and displays a vote entity.
+     *
+     * @Route("/{id}", name="vote_show")
+     * @Method("GET")
+     */
+    public function showAction(Vote $vote)
+    {
+        $deleteForm = $this->createDeleteForm($vote);
+
+        return $this->render('vote/show.html.twig', array(
+            'vote' => $vote,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing vote entity.
+     *
+     * @Route("/{id}/edit", name="vote_edit")
+     * @Method({"GET", "POST"})
+     */
+    public function editAction(Request $request, Vote $vote)
+    {
+        $deleteForm = $this->createDeleteForm($vote);
+        $editForm = $this->createForm('AppBundle\Form\VoteType', $vote);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('vote_edit', array('id' => $vote->getId()));
+        }
+
+        return $this->render('vote/edit.html.twig', array(
+            'vote' => $vote,
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
      * Deletes a vote entity.
      *
-     * @Route("/category/{id}/vote/{voteId}/delete", name="vote_delete")
+     * @Route("/{id}", name="vote_delete")
+     * @Method("DELETE")
      */
     public function deleteAction(Request $request, Vote $vote)
     {
-        $em = $this->getDoctrine()->getManager();
+        $form = $this->createDeleteForm($vote);
+        $form->handleRequest($request);
 
-        $category = $vote->getCategory();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($vote);
+            $em->flush();
+        }
 
-        $em->remove($vote);
-        $em->flush();
-
-        return $this->redirectToRoute('vote_new', array(
-            "id" => $category->getId()
-        ));
+        return $this->redirectToRoute('vote_index');
     }
 
     /**

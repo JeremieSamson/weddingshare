@@ -3,14 +3,26 @@
 {% block content %}
     <div class="row" id="voter">
         <div class="col-lg-12">
-            <h2 class="page-header">{{ category.name }}</h2>
+            {% if category.medias|length == 0 %}
+                <div class="alert alert-danger">Il n'y a pas encore de photos dans cette catégorie</div>
+            {% else %}
+                <h2 class="page-header">{{ category.name }}</h2>
 
-            <p>
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <input type="submit" value="Create" />
-                {{ form_end(form) }}
-            </p>
+                {% for media in category.medias %}
+                    <div class="col-lg-4">
+                        <a href="">
+                            <img src="{{ app.request.getSchemeAndHttpHost() ~ media.path }}" width="400px">
+                        </a>
+                        par {{ media.author }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <br>
+        </div>
+
+        <div class="col-lg-12">
+            <a href="{{ path('index') }}">Revenir a la page d'accueil</a>
         </div>
     </div>
 {% endblock %}
