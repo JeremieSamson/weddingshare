@@ -2,9 +2,9 @@
 
 {% block content %}
     <div class="row" id="voter">
-        {% if vote is defined and vote is not null %}
+        {# if vote is defined and vote is not null %}
             <a href="{{ path('vote_delete', {'voteId': vote.id, 'id': category.id}) }}">Changer son vote</a><br><br>
-       {% endif %}
+        {% endif #}
 
         <a href="{{ path('index') }}">Revenir a la page d'accueil</a>
     </div>

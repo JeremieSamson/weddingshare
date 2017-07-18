@@ -9,11 +9,12 @@
                 <h2 class="page-header">{{ category.name }}</h2>
 
                 {% for media in category.medias %}
-                    <div class="col-lg-4">
-                        <a href="">
-                            <img src="{{ app.request.getSchemeAndHttpHost() ~ media.path }}" width="400px">
+                    <div class="col-lg-4" style="margin-top: 10px;">
+                        {% set url = app.request.getSchemeAndHttpHost() ~ media.path %}
+                        <a href="{{ url }}" target="_blank">
+                            <img src="{{ url }}"  id="img_{{ media.id }}" width="350px">
                         </a>
-                        par {{ media.author }}
+                        par {{ media.author }} <a href="{{ path('vote_media', {'id':category.id, 'mediaId':media.id}) }}" class="voteBtn btn btn-success glyphicon glyphicon-thumbs-up"></a>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -21,8 +22,21 @@
             <br>
         </div>
 
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-top: 25px;">
             <a href="{{ path('index') }}">Revenir a la page d'accueil</a>
         </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- The Close Button -->
+        <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+        <!-- Modal Content (The Image) -->
+        <img class="modal-content" id="img01">
+
+        <!-- Modal Caption (Image Text) -->
+        <div id="caption"></div>
     </div>
 {% endblock %}

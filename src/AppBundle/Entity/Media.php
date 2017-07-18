@@ -174,7 +174,9 @@ class Media
      * @return string
      */
     public function getPath(){
-        return "/uploads/" .$this->getCategory()->getPath(). "/" . $this->name;
+        $dir = $this->getCategory() ? $this->getCategory()->getPath() : "all";
+
+        return "/uploads/" .$dir. "/" . $this->name;
     }
 }
 

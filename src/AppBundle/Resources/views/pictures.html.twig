@@ -1,0 +1,25 @@
+<!-- Features Section -->
+<div class="row" id="pictures">
+    <div class="col-lg-12">
+        <h2 class="page-header">Envoyer vos photos aux mariés</h2>
+    </div>
+    <div class="col-md-6">
+        <p>Ici vous pouvez simplement envoyer vos photos aux mariés, ils vous en seront très reconnaissant</p>
+    </div>
+
+    <div class="col-md-6">
+        <br>
+        {{ form_start(picturesForm) }}
+        <ol>
+            <li>
+                {{ form_label(picturesForm.files) }}
+                {{ form_widget(picturesForm.files) }}
+            </li>
+            <li>
+                <input type="submit" value="Envoyer">
+            </li>
+        </ol>
+        {{ form_end(picturesForm) }}
+    </div>
+</div>
+<!-- /.row -->

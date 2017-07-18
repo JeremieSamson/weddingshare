@@ -10,9 +10,11 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
         {% for picture in pictures %}
-            <div class="item {{ loop.index - 1 == 0 ? 'active' : "" }}">
-                <img src="{{ picture }}">
-            </div>
+            {% if picture is defined and picture.path is not null and picture.path is not empty %}
+                <div class="item {{ loop.index - 1 == 0 ? 'active' : "" }}">
+                    <img src="{{ app.request.getSchemeAndHttpHost() ~ picture.path }}" width=1900"">
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 

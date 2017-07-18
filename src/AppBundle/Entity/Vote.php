@@ -24,13 +24,6 @@ class Vote
     /**
      * @var string
      *
-     * @ORM\Column(name="file", type="string", length=255)
-     */
-    private $file;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="ip", type="string", length=15)
      */
     private $ip;
@@ -51,30 +44,6 @@ class Vote
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set file
-     *
-     * @param string $file
-     *
-     * @return Vote
-     */
-    public function setFile($file)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    /**
-     * Get file
-     *
-     * @return string
-     */
-    public function getFile()
-    {
-        return $this->file;
     }
 
     /**

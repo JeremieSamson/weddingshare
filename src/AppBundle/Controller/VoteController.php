@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Vote controller.
  */
-class VoteController extends Controller
+class VoteController extends BaseController
 {
 
     /**
@@ -51,37 +51,83 @@ class VoteController extends Controller
             $this->addFlash('danger', 'Vous avez déjà voté pour cette catégorie !');
 
             return $this->render('AppBundle:vote:voteAlready.html.twig', array(
-                "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+                "pictures" => $this->getRandomMedias(),
                 "category" => $category,
                 'vote' => $voteHereAlready
             ));
-        } else {
-            $vote = new Vote();
-
-            if ($request->get('action') == 'vote') {
-                $em = $this->getDoctrine()->getManager();
-
-                // Set other attributes
-                $vote->setIp($ip);
-                $category->addVote($vote);
-
-                $em->persist($vote);
-
-                $em->flush();
-
-                $this->addFlash('success', 'Votre vote a bien été enregistré !');
-
-                return $this->render('AppBundle:vote:voteAlready.html.twig', array(
-                    "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
-                    "category" => $category,
-                ));
-            }
         }
 
         return $this->render('AppBundle:vote:form.html.twig', array(
-            "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+            "pictures" => $this->getRandomMedias(),
+            "medias" => $lorempixelWrapper->generateRandomPicturesUrl(7),
             "category" => $category,
             'vote' => $vote
+        ));
+    }
+
+    /**
+     * Creates a new vote entity.
+     *
+     * @Route("/category/{id}/vote/media/{mediaId}", name="vote_media")
+     * @Method({"GET", "POST"})
+     */
+    public function newMediaVoteAction(Request $request, $id, $mediaId)
+    {
+        $category = $media = null;
+
+        try{
+            $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($id);
+        }catch(\Exception $e){
+            $this->addFlash('danger', 'La page demandée n\'existe pas');
+        }
+
+        try{
+            $media = $this->getDoctrine()->getRepository('AppBundle:Media')->find($mediaId);
+        }catch(\Exception $e){
+            $this->addFlash('danger', 'La photo demandée n\'existe pas');
+        }
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        $voteHereAlready = $this->getDoctrine()->getRepository('AppBundle:Vote')->findOneBy(array(
+            "category" => $category,
+            "ip" => $ip
+        ));
+
+        if ($voteHereAlready) {
+            $this->addFlash('danger', 'Vous avez déjà voté pour cette catégorie !');
+
+            return $this->render('AppBundle:vote:voteAlready.html.twig', array(
+                "pictures" => $this->getRandomMedias(),
+                "category" => $category,
+                'vote' => $voteHereAlready
+            ));
+        }
+
+        if ($category && $media) {
+            $em = $this->getDoctrine()->getManager();
+
+            $vote = new Vote();
+
+            $vote->setIp($ip);
+            $category->addVote($vote);
+
+            $em->persist($vote);
+
+            $em->flush();
+
+            $this->addFlash('success', 'Votre vote a bien été enregistré !');
+        }
+
+        return $this->render('AppBundle:vote:voteAlready.html.twig', array(
+            "pictures" => $this->getRandomMedias(),
+            "category" => $category,
         ));
     }
 

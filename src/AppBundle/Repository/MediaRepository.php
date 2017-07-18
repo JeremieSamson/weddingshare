@@ -10,4 +10,16 @@ namespace AppBundle\Repository;
  */
 class MediaRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $ids
+     *
+     * @return array
+     */
+    public function findByIds($ids){
+        $qb = $this->createQueryBuilder('m');
+
+        $qb->where($qb->expr()->in('m.id', $ids));
+
+        return $qb->getQuery()->getResult();
+    }
 }

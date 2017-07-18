@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Media;
 use AppBundle\Form\Model\Participate;
+use AppBundle\Form\Model\Pictures;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,14 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class DefaultController
  */
-class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Controller
+class DefaultController extends BaseController
 {
     /**
      * @Route("/", name="index")
      */
     public function indexAction(Request $request){
-        $lorempixelWrapper = $this->get('lorempixel.wrapper');
-
         $participate = new Participate();
         $form = $this->createForm('AppBundle\Form\Type\ParticipateType', $participate);
         $form->handleRequest($request);
@@ -50,10 +49,45 @@ class DefaultController extends \Symfony\Bundle\FrameworkBundle\Controller\Contr
             $this->addFlash('success', 'Votre participation a bien été enregistrée !');
         }
 
+        $pictures = new Pictures();
+        $picturesForm = $this->createForm('AppBundle\Form\Type\PicturesType', $pictures);
+        $picturesForm->handleRequest($request);
+
+        if ($picturesForm->isSubmitted() && $picturesForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            // Move file
+            /** @var UploadedFile $file */
+            $files = $pictures->getFiles();
+
+            foreach($files as $file) {
+                $media = new Media();
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+                $media->setExtension($file->guessExtension());
+                $media->setName($fileName);
+                $media->setUrl($this->getParameter('kernel.project_dir') . '/web/uploads/all');
+                $media->setAuthor("anonyme");
+
+                // Move the file to the directory where brochures are stored
+                $file->move(
+                    $media->getUrl(),
+                    $fileName
+                );
+
+                $em->persist($media);
+            }
+
+            $em->flush();
+
+            $this->addFlash('success', 'Merci beaucoup pour vos photos !');
+        }
+
         return $this->render('AppBundle::index.html.twig', array(
-            "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+            "pictures" => $this->getRandomMedias(),
             "categories" => $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Category')->findAll(),
             'form' => $form->createView(),
+            'picturesForm' => $picturesForm->createView(),
         ));
     }
 }

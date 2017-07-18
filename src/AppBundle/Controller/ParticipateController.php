@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Vote controller.
  */
-class VoteController extends Controller
+class VoteController extends BaseController
 {
 
     /**
@@ -24,8 +24,6 @@ class VoteController extends Controller
      */
     public function newAction(Request $request, $id)
     {
-        $lorempixelWrapper = $this->get('lorempixel.wrapper');
-
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
         } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -51,7 +49,7 @@ class VoteController extends Controller
             $this->addFlash('error', 'Vous avez déjà voté pour cette catégorie !');
 
             return $this->render('AppBundle:vote:voteAlready.html.twig', array(
-                "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+                "pictures" => $this->getRandomMedias(),
                 "category" => $category,
             ));
         } else {
@@ -89,14 +87,14 @@ class VoteController extends Controller
                 $this->addFlash('success', 'Votre vote a bien été enregistré !');
 
                 return $this->render('AppBundle:vote:voteAlready.html.twig', array(
-                    "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+                    "pictures" => $this->getRandomMedias(),
                     "category" => $category,
                 ));
             }
         }
 
         return $this->render('AppBundle:vote:form.html.twig', array(
-            "pictures" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+            "pictures" => $this->getRandomMedias(),
             "category" => $category,
             'vote' => $vote,
             'form' => $form->createView(),
