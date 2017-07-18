@@ -26,7 +26,6 @@ set :use_composer, true
 set :interactive_mode, false
 set :assets_install,      true
 set :dump_assetic_assets, false
-set :symfony_env_prod, "prod"
 set :use_composer, true
 set :model_manager, "doctrine"
 
