@@ -18,7 +18,7 @@ class VoteController extends BaseController
     /**
      * Creates a new vote entity.
      *
-     * @Route("/category/{id}/vote/media/{mediaId}", name="media_vote")
+     * @Route("/category/{id}/vote/media/{mediaId}", name="vote_new_media")
      */
     public function newMediaVoteAction(Request $request, $id, $mediaId)
     {
@@ -146,21 +146,5 @@ class VoteController extends BaseController
             "category" => $category,
             'vote' => $vote
         ));
-    }
-
-    /**
-     * Creates a form to delete a vote entity.
-     *
-     * @param Vote $vote The vote entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Vote $vote)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('vote_delete', array('id' => $vote->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
     }
 }
