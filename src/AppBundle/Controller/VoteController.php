@@ -18,7 +18,7 @@ class VoteController extends BaseController
     /**
      * Creates a new vote entity.
      *
-     * @Route("/category/{id}/vote/media/{mediaId}", name="vote_media")
+     * @Route("/category/{id}/vote/media/{mediaId}", name="media_vote")
      */
     public function newMediaVoteAction(Request $request, $id, $mediaId)
     {

@@ -14,7 +14,7 @@
                         <a href="{{ url }}" target="_blank">
                             <img src="{{ url }}"  id="img_{{ media.id }}" width="350px">
                         </a>
-                        par {{ media.author }} <a href="{{ path('vote_media', {'id':category.id, 'mediaId':media.id}) }}" class="voteBtn btn btn-success glyphicon glyphicon-thumbs-up"></a>
+                        par {{ media.author }} <a href="{{ path('media_vote', {'id':category.id, 'mediaId':media.id}) }}" class="voteBtn btn btn-success glyphicon glyphicon-thumbs-up"></a>
                     </div>
                 {% endfor %}
             {% endif %}
