@@ -46,7 +46,7 @@ end
 set :shared_files,      ["app/config/parameters.yml"]
 set :shared_children,     ["var/logs", "var/sessions", "var/cache", "vendor"]
 
-set :composer_options, "--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress"
+set :composer_options, "--verbose --prefer-dist --optimize-autoloader --no-progress"
 
 # Run deployment
 after "deploy", "deploy:cleanup"
