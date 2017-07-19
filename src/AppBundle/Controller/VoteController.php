@@ -15,56 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class VoteController extends BaseController
 {
-
-    /**
-     * Creates a new vote entity.
-     *
-     * @Route("/category/{id}/vote", name="vote_new")
-     * @Method({"GET", "POST"})
-     */
-    public function newAction(Request $request, $id)
-    {
-        $lorempixelWrapper = $this->get('lorempixel.wrapper');
-
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-
-        $category = $vote = null;
-
-        try{
-            $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($id);
-        }catch(\Exception $e){
-            $this->addFlash('danger', 'La page demandée n\'existe pas');
-        }
-
-        $voteHereAlready = $this->getDoctrine()->getRepository('AppBundle:Vote')->findOneBy(array(
-            "category" => $category,
-            "ip" => $ip
-        ));
-
-        if ($voteHereAlready) {
-            $this->addFlash('danger', 'Vous avez déjà voté pour cette catégorie !');
-
-            return $this->render('AppBundle:vote:voteAlready.html.twig', array(
-                "pictures" => $this->getRandomMedias(),
-                "category" => $category,
-                'vote' => $voteHereAlready
-            ));
-        }
-
-        return $this->render('AppBundle:vote:form.html.twig', array(
-            "pictures" => $this->getRandomMedias(),
-            "medias" => $lorempixelWrapper->generateRandomPicturesUrl(7),
-            "category" => $category,
-            'vote' => $vote
-        ));
-    }
-
     /**
      * Creates a new vote entity.
      *
@@ -146,6 +96,55 @@ class VoteController extends BaseController
 
         return $this->redirectToRoute('vote_new', array(
             "id" => $category->getId()
+        ));
+    }
+
+    /**
+     * Creates a new vote entity.
+     *
+     * @Route("/category/{id}/vote", name="vote_new")
+     * @Method({"GET", "POST"})
+     */
+    public function newAction(Request $request, $id)
+    {
+        $lorempixelWrapper = $this->get('lorempixel.wrapper');
+
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        $category = $vote = null;
+
+        try{
+            $category = $this->getDoctrine()->getRepository('AppBundle:Category')->find($id);
+        }catch(\Exception $e){
+            $this->addFlash('danger', 'La page demandée n\'existe pas');
+        }
+
+        $voteHereAlready = $this->getDoctrine()->getRepository('AppBundle:Vote')->findOneBy(array(
+            "category" => $category,
+            "ip" => $ip
+        ));
+
+        if ($voteHereAlready) {
+            $this->addFlash('danger', 'Vous avez déjà voté pour cette catégorie !');
+
+            return $this->render('AppBundle:vote:voteAlready.html.twig', array(
+                "pictures" => $this->getRandomMedias(),
+                "category" => $category,
+                'vote' => $voteHereAlready
+            ));
+        }
+
+        return $this->render('AppBundle:vote:form.html.twig', array(
+            "pictures" => $this->getRandomMedias(),
+            "medias" => $lorempixelWrapper->generateRandomPicturesUrl(7),
+            "category" => $category,
+            'vote' => $vote
         ));
     }
 
