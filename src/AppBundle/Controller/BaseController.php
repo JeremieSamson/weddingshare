@@ -28,7 +28,8 @@ class BaseController extends Controller
 
         $medias = $mediaRepo->findAll();
         $randomIds = array_rand($medias, round(count($medias) / 2));
+        $randomMedias = count($randomIds) > 0 ? $randomIds : array();
 
-        return new ArrayCollection($mediaRepo->findByIds($randomIds));
+        return new ArrayCollection($mediaRepo->findByIds($randomMedias));
     }
 }
