@@ -10,15 +10,12 @@
     <div class="col-md-6">
         <br>
         {{ form_start(picturesForm) }}
-        <ol>
-            <li>
-                {{ form_label(picturesForm.files) }}
-                {{ form_widget(picturesForm.files) }}
-            </li>
-            <li>
-                <input type="submit" value="Envoyer">
-            </li>
-        </ol>
+
+            {{ form_label(picturesForm.files) }}
+            {{ form_widget(picturesForm.files) }}<br>
+
+            <input type="submit" value="Envoyer">
+
         {{ form_end(picturesForm) }}
     </div>
 </div>

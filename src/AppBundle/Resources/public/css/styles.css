@@ -1,0 +1,13 @@
+label
+{
+    display: block;
+    width: 100px;
+    float: left;
+}
+
+footer
+{
+    height: 20px;
+    width: 100%;
+    background-color: #f4bc42;
+}

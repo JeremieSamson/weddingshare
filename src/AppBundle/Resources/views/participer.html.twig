@@ -3,46 +3,52 @@
     <div class="col-lg-12">
         <h2 class="page-header">Participer au concours</h2>
     </div>
+
     <div class="col-md-6">
         <p>Pour participer c'est facile !</p>
+        <br>
         <ol>
             <li>Choisis ta catégorie juste a droite</li>
             <li>Met ton nom/surnom ou une façon de te reconnaitre</li>
             <li>Sélectionne une photo sur ton ordi</li>
             <li>Envoie le tout !</li>
         </ol>
+
+        <br>
+
         <p>
-            Si tu gagnes les mariées te prépareront quelque chose.<br>
-            <br>
-            <h3>Tu as gagnés dans une catégorie ?</h3>
-            <span>
-                Tu as gagné un super méga cool <strong>APERO</strong>
-            </span>
-            Et alors attention, pour ceux qui gagneraient dans <b>deux</b> catégories, là, ça sera I-N-O-U-B-L-I-A-B-L-E : les mariés vous concoteront ... UN REPAS !
+            Si tu gagnes les mariées te prépareront quelque chose.
         </p>
     </div>
 
     <div class="col-md-6">
         <br>
         {{ form_start(form) }}
-        <ol>
-            <li>
                 {{ form_label(form.category) }}
-                {{ form_widget(form.category) }}
-            </li>
-            <li>
+                {{ form_widget(form.category) }}<br>
+                <br>
                 {{ form_label(form.name) }}
-                {{ form_widget(form.name) }}
-            </li>
-            <li>
+                {{ form_widget(form.name) }}<br>
+                <br>
                 {{ form_label(form.file) }}
-                {{ form_widget(form.file) }}
-            </li>
-            <li>
+                {{ form_widget(form.file) }}<br>
+
                 <input type="submit" value="Envoyer">
-            </li>
-        </ol>
+
+
         {{ form_end(form) }}
+    </div>
+
+    <div class="col-md-12">
+        <p>
+
+            <br>
+        <h3>Tu as gagnés dans une catégorie ?</h3>
+            <span>
+                Tu as gagné un super méga cool <strong>APERO</strong>
+            </span>
+        Et alors attention, pour ceux qui gagneraient dans <b>deux</b> catégories, là, ça sera I-N-O-U-B-L-I-A-B-L-E : les mariés vous concoteront ... UN REPAS !
+        </p>
     </div>
 </div>
 <!-- /.row -->
