@@ -44,7 +44,7 @@ def self.directory?(path)
     results.count > 0
 end
 set :shared_files,      ["app/config/parameters.yml"]
-set :shared_children,     ["var/logs", "var/sessions", "var/cache", "vendor"]
+set :shared_children,     ["var/logs", "var/sessions", "var/cache", "vendor", "web/uploads"]
 
 set :composer_options, "--verbose --prefer-dist --optimize-autoloader --no-progress"
 
