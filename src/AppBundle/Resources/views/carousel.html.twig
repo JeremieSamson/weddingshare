@@ -13,7 +13,7 @@
         {% for picture in pictures %}
             {% if picture is defined and picture.path is not null and picture.path is not empty %}
                 <div class="item {{ loop.index - 1 == 0 ? 'active' : "" }}">
-                    <img src="{{ app.request.getSchemeAndHttpHost() ~ picture.path }}">
+                    <img src="{{ app.request.getSchemeAndHttpHost() ~ picture.path }}" width=1900">
                 </div>
             {% endif %}
         {% endfor %}
