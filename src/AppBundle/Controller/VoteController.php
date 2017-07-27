@@ -129,8 +129,9 @@ class VoteController extends BaseController
             "category" => $category,
             "ip" => $ip
         ));
+        $voteHereAlready = $voteHereAlready ? true : false;
 
-        if ($voteHereAlready) {
+        /*if ($voteHereAlready) {
             $this->addFlash('danger', 'Vous avez déjà voté pour cette catégorie !');
 
             return $this->render('AppBundle:vote:voteAlready.html.twig', array(
@@ -138,13 +139,14 @@ class VoteController extends BaseController
                 "category" => $category,
                 'vote' => $voteHereAlready
             ));
-        }
+        }*/
 
         return $this->render('AppBundle:vote:form.html.twig', array(
             "pictures" => $this->getRandomMedias(),
             "medias" => $lorempixelWrapper->generateRandomPicturesUrl(7),
             "category" => $category,
-            'vote' => $vote
+            'vote' => $vote,
+            'voteHereAlready' => $voteHereAlready
         ));
     }
 }
