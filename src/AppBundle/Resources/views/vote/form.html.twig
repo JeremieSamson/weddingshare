@@ -14,11 +14,9 @@
                         <a href="{{ url }}" target="_blank">
                             <img src="{{ url }}"  id="img_{{ media.id }}" width="350px">
                         </a>
-                        par {{ media.author }}
+                        par {{ media.author }} ({{ media.nbVotes }} vote(s))
                         {% if voteHereAlready == false %}
                             <a href="{{ path('vote_new_media', {'id':category.id, 'mediaId':media.id}) }}" class="voteBtn btn btn-success glyphicon glyphicon-thumbs-up"></a>
-                        {% else %}
-                            ({{ category.votes|length }})
                         {% endif %}
                     </div>
                 {% endfor %}
