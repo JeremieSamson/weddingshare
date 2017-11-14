@@ -57,6 +57,20 @@ class Media
     private $author;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nb_votes", type="integer")
+     */
+    private $nbVotes;
+
+    /**
+     * Constructor
+     */
+    public function __construct(){
+        $this->nbVotes = 0;
+    }
+
+    /**
      * Get id
      *
      * @return int
@@ -177,6 +191,20 @@ class Media
         $dir = $this->getCategory() ? $this->getCategory()->getPath() : "all";
 
         return "/uploads/" .$dir. "/" . $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbVotes(){
+        return $this->nbVotes;
+    }
+
+    /**
+     * @param int
+     */
+    public function setNbVotes($nbVotes){
+        $this->nbVotes = $nbVotes;
     }
 }
 

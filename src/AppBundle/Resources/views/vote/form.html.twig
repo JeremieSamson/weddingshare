@@ -17,6 +17,8 @@
                         par {{ media.author }}
                         {% if voteHereAlready == false %}
                             <a href="{{ path('vote_new_media', {'id':category.id, 'mediaId':media.id}) }}" class="voteBtn btn btn-success glyphicon glyphicon-thumbs-up"></a>
+                        {% else %}
+                            ({{ category.votes|length }})
                         {% endif %}
                     </div>
                 {% endfor %}

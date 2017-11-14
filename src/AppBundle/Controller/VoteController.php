@@ -66,6 +66,7 @@ class VoteController extends BaseController
 
             $vote->setIp($ip);
             $category->addVote($vote);
+            $media->setNbVotes($media->getNbVotes()+1);
 
             $em->persist($vote);
 
